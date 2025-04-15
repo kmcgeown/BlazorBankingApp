@@ -1,0 +1,64 @@
+﻿@page "/login"
+@using Web.Services
+@inject AuthStateService AuthService
+@inject NavigationManager NavManager
+
+<h3>Login</h3>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color: red;">@errorMessage</p>
+}
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginModel.Username" />
+    </div>
+    <br />
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" style="width: 205px; height: 31px; padding-left: 5px" />
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">Log In</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        errorMessage = null; // Clear previous error
+        bool success = await AuthService.LoginAsync(loginModel.Username ?? "", loginModel.Password ?? "");
+        if (success)
+        {
+            // Redirect to the home page or a desired page after login
+            NavManager.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Invalid username or password.";
+        }
+    }
+
+    // Simple model for the form
+    public class LoginModel
+    {
+        public string? Username { get; set; } = "Anne";
+        public string? Password { get; set; } = "password";
+    }
+
+    // Prevent logged-in users from seeing the login page again
+    protected override void OnInitialized()
+    {
+        if (AuthService.IsLoggedIn)
+        {
+            NavManager.NavigateTo("/");
+        }
+    }
+}

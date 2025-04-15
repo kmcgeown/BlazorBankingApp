@@ -1,0 +1,67 @@
+﻿@page "/loginOld"
+@using Application.Customer.Queries.AuthenticateCustomer
+@using Application.Models
+@using MediatR
+@using Radzen
+@inject IMediator Mediator
+@inject NotificationService NotificationService
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage sessionStorage
+
+
+<RadzenStack class="rz-p-0 rz-p-md-12">
+    <RadzenTemplateForm TItem="AuthCustomer" Data=@authUser Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+        <RadzenRow Gap="1rem">
+            <RadzenColumn Size="12" SizeSM="6">
+                <RadzenStack> 
+                    <RadzenFormField Text="User Name" Variant="@variant"> 
+                        <RadzenTextBox @bind-Value="@authUser.Name" Rows="4" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Password" Variant="@variant">
+                        <ChildContent>
+                            <RadzenTextBox @bind-Value="@authUser.Password" Visible="@(!password)" />
+                            <RadzenPassword @bind-Value="@authUser.Password" Visible="@password" />
+                        </ChildContent>
+                        <End>
+                            <RadzenButton Icon="@(password ? "visibility" : "visibility_off")" Click="TogglePassword" Variant="Variant.Text" Size="ButtonSize.Small" />
+                        </End>
+                    </RadzenFormField>
+                    <RadzenRow AlignItems="AlignItems.Center" class="rz-mt-4">
+                        <RadzenColumn Size="12" Offset="0" SizeMD="8" OffsetMD="4">
+                            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenTemplateForm>
+</RadzenStack>
+
+
+@code {
+    Variant variant = Variant.Outlined;
+    public AuthCustomer authUser = new AuthCustomer();
+    bool password = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    async Task OnSubmit(AuthCustomer authUser)
+    {
+        var result = await Mediator.Send(new AuthenicateCustomerQuery(authUser));
+        await sessionStorage.SetAsync("currentCustomer", result);
+        NotificationService.Notify(new NotificationMessage { Style = "position: absolute; inset-inline-start: -1000px;", Severity = NotificationSeverity.Success, Summary = "Success Summary", Detail = "Success Detail", Duration = 4000 });
+
+    }
+
+    void TogglePassword()
+    {
+        password = !password;
+    }
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+     //   Console.WriteLine("InValidSubmit", JsonSerializer.Serialize(sampleForm, new JsonSerializerOptions() { WriteIndented = true }));
+    }
+}

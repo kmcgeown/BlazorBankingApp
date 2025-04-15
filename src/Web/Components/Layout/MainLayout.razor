@@ -1,0 +1,64 @@
+﻿@inherits LayoutComponentBase
+@using Application.Models
+@using MediatR
+@inject IMediator Mediator
+@using Web.Services
+@inject AuthStateService AuthService
+@* @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage *@
+@* @inject ProtectedSessionStorage sessionStorage *@
+<RadzenDialog /> 
+<RadzenNotification />
+<RadzenComponents  /> 
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+              @*     <a href="login" target="_blank">Log In</a> *@
+            @if (AuthService.IsLoggedIn)
+            {
+                <span>Welcome, @AuthService.CurrentUsername!</span>
+                <button class="ml-md-auto btn btn-link" @onclick="Logout">Log out</button>
+            }
+            else
+            {
+                <a href="/login" class="ml-md-auto">Log in</a>
+            }
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Subscribe to the event so the layout updates when auth state changes
+        AuthService.OnChange += StateHasChanged;
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        // Force navigation to ensure clean state, especially after logout
+       // NavManager.NavigateTo("/", forceLoad: true);
+    }
+
+    // Implement IDisposable to unsubscribe from the event when the component is destroyed
+    public void Dispose()
+    {
+        AuthService.OnChange -= StateHasChanged;
+    }
+}
