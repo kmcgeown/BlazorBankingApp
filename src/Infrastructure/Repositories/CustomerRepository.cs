@@ -9,24 +9,6 @@ namespace Infrastructure.Repositories;
 
 public class CustomerRepository : ICustomerRepository
 {
-    public Task<CustomerDetails> AuthenicateUser(AuthCustomer authCustomer)
-    {
-        var random = new Random();
-        var customerDetails = new CustomerDetails();
-        if (authCustomer != null)
-        {
-            customerDetails.Name = authCustomer.Name;
-            customerDetails.CreditRating =
-                authCustomer.Name == "Bob" ? 15
-                : authCustomer.Name == "Jim" ? 45
-                : authCustomer.Name == "Jim" ? 80
-                : 0;
-            customerDetails.CustomerId = random.Next(10000, 19999);
-        }
-
-        return Task.FromResult(customerDetails);
-    }
-
     public Task<CustomerDetails> GetCustomerAccountDetails(string customerName)
     {
         var random = new Random();

@@ -30,7 +30,8 @@ public class CreateCustomerLoanRequestCommandHandler
             command.loanRequest.DurationYears
         );
 
-        //Should have its own helper method
+        //TODO: Should have its own helper method
+        //TODO: Planned to return Message back to the UI to be used in notifications
         if (IsApproved)
         {
             account.Status = Enums.AccountStatus.Open;
