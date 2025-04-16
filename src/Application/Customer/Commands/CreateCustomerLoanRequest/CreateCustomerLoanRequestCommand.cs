@@ -41,7 +41,7 @@ public class CreateCustomerLoanRequestCommandHandler
             account.OutstandingBalance = command.loanRequest.Amount * (1 + interestRate);
 
             //Fake update of db
-            _ = await _customerRepository.UpdateCustomerAccount(
+            _ = await _customerRepository.CreateNewCustomerAccount(
                 account,
                 command.loanRequest.CustomerId
             );

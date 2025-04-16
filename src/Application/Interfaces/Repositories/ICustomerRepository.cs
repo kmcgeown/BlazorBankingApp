@@ -4,6 +4,6 @@
     {
         Task<CustomerDetails> AuthenicateUser(AuthCustomer authCustomer);
         Task<CustomerDetails> GetCustomerAccountDetails(string customerName);
-        Task<bool> UpdateCustomerAccount(Account account, int customerId);
+        Task<bool> CreateNewCustomerAccount(Account account, int customerId);
     }
 }

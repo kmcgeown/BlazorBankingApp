@@ -9,15 +9,15 @@ public class LoanService : ILoanService
 
     public LoanService()
     {
-        _rules = new List<IInterestRateRule>
-        {
+        _rules =
+        [
             new InterestRule(20, 50, 1, 0.20m),
             new InterestRule(20, 50, 3, 0.15m),
             new InterestRule(20, 50, 5, 0.10m),
             new InterestRule(51, 100, 1, 0.12m),
             new InterestRule(51, 100, 3, 0.08m),
             new InterestRule(51, 100, 5, 0.05m),
-        };
+        ];
     }
 
     public (bool IsApproved, string Message, decimal? InterestRate) ApplyForLoan(
@@ -37,7 +37,7 @@ public class LoanService : ILoanService
 
         var rule = _rules.FirstOrDefault(r => r.IsMatch(creditRating, duration));
 
-        if (rule == null)
+        if (rule is null)
             return (false, "Could not determine interest rate for the given parameters.", null);
 
         return (true, $"Loan approved! Interest Rate: {rule.Rate:P2}.", rule.Rate);

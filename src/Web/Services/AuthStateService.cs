@@ -5,11 +5,11 @@ public class AuthStateService
     public string? CurrentUsername { get; private set; }
 
     public bool IsLoggedIn => !string.IsNullOrEmpty(CurrentUsername);
-    
+
     public event Action? OnChange;
 
-    private const string HardcodedPass = "password";
-    
+    private const string HardcodedPass = "Wli!s293Random";
+
     public Task<bool> LoginAsync(string username, string password)
     {
         if (password == HardcodedPass)
@@ -18,9 +18,9 @@ public class AuthStateService
             NotifyStateChanged();
             return Task.FromResult(true);
         }
-        
-        CurrentUsername = null; 
-        return Task.FromResult(false);     
+
+        CurrentUsername = null;
+        return Task.FromResult(false);
     }
 
     public Task LogoutAsync()
