@@ -36,13 +36,16 @@ public class CreateCustomerLoanRequestCommandHandler
         if (IsApproved)
         {
             account.Type = Enums.AccountType.Loan;
+            account.Status = Enums.AccountStatus.Open;
             account.Balance = command.loanRequest.Amount;
             account.OutstandingBalance =
                 (command.loanRequest.Amount * (InterestRate ?? 0)) + command.loanRequest.Amount;
+
             //_ = await _customerRepository.UpdateCustomerAccount(account);
         }
         else
         {
+            account.Status |= Enums.AccountStatus.Rejected;
             account.Type = Enums.AccountType.Loan;
             account.Balance = 0;
             account.OutstandingBalance = 0;

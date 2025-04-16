@@ -228,10 +228,20 @@ else
         loanRequest.Name = customer.Name;
         loanRequest.Id = customer.Id;
         var account = await Mediator.Send(new CreateCustomerLoanRequestCommand(loanRequest));
-        if (account.OutstandingBalance > 0) customer.Accounts.Add(account);
-        if (account.OutstandingBalance == 0 && account.Balance == 0)
+        if (account.Status == AccountStatus.Rejected)
         {
-            NotificationService.Notify(new NotificationMessage { Style = "position: absolute; inset-inline-start: -1000px;", Severity = NotificationSeverity.Error, Summary = "Loan Rejected", Detail = "We value your business but your credit score is too low.", Duration = 4000 });
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Style = "position: absolute; inset-inline-start: -1000px;",
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Loan Rejected",
+                    Detail = "We value your business but your credit score is too low.",
+                    Duration = 4000
+                });
+        }
+        else
+        {
+            customer.Accounts.Add(account);
         }
         showLoanDialog = false;
         StateHasChanged(); 

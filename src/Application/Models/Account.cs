@@ -8,4 +8,5 @@ public class Account
     public decimal Balance { get; set; }
     public decimal OutstandingBalance { get; set; }
     public AccountType Type { get; set; }
+    public AccountStatus Status { get; set; }
 }

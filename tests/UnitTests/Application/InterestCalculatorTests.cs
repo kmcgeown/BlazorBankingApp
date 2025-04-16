@@ -39,6 +39,7 @@ public class InterestCalculatorTests
 
     [Theory]
     [InlineData(10, 3)]
+    [InlineData(21, 33)]
     [InlineData(110, 5)]
     [InlineData(45, 2)]
     [InlineData(85, 4)]

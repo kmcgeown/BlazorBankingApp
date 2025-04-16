@@ -91,6 +91,7 @@ namespace Infrastructure.Repositories
                     Type = randomType,
                     Balance = randomBalance,
                     OutstandingBalance = randomOutStandingBalance,
+                    Status = AccountStatus.Open,
                 };
 
                 customerDetails.Accounts.Add(newAccount);
