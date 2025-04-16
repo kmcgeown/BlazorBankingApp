@@ -1,8 +1,4 @@
-﻿using Application.Models;
-using Application.Services;
-using Domain.Services;
-
-namespace Application.Customer.Commands.CreateCustomerLoanRequest;
+﻿namespace Application.Customer.Commands.CreateCustomerLoanRequest;
 
 public record CreateCustomerLoanRequestCommand(LoanRequest loanRequest) : IRequest<Account>;
 
@@ -33,15 +29,22 @@ public class CreateCustomerLoanRequestCommandHandler
             command.loanRequest.Amount,
             command.loanRequest.DurationYears
         );
+
+        //Should have its own helper method
         if (IsApproved)
         {
-            account.Type = Enums.AccountType.Loan;
             account.Status = Enums.AccountStatus.Open;
-            account.Balance = command.loanRequest.Amount;
-            account.OutstandingBalance =
-                (command.loanRequest.Amount * (InterestRate ?? 0)) + command.loanRequest.Amount;
+            account.Type = Enums.AccountType.Loan;
 
-            //_ = await _customerRepository.UpdateCustomerAccount(account);
+            account.Balance = command.loanRequest.Amount;
+            var interestRate = InterestRate ?? 0;
+            account.OutstandingBalance = command.loanRequest.Amount * (1 + interestRate);
+
+            //Fake update of db
+            _ = await _customerRepository.UpdateCustomerAccount(
+                account,
+                command.loanRequest.CustomerId
+            );
         }
         else
         {
@@ -51,7 +54,6 @@ public class CreateCustomerLoanRequestCommandHandler
             account.OutstandingBalance = 0;
         }
 
-        await Task.Delay(100);
         return account;
     }
 }

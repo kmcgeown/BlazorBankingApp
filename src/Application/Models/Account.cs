@@ -1,10 +1,8 @@
-﻿using Application.Enums;
-
-namespace Application.Models;
+﻿namespace Application.Models;
 
 public class Account
 {
-    public int Id { get; set; }
+    public int AccountId { get; set; }
     public decimal Balance { get; set; }
     public decimal OutstandingBalance { get; set; }
     public AccountType Type { get; set; }

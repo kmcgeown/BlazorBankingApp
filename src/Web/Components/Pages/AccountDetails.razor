@@ -116,7 +116,7 @@
                                 <option value="0">-- Select Account --</option> 
                                 @foreach (var account in customer.Accounts)
                                 {
-                                    <option value="@account.Id">@GetEnumDisplayName(account.Type) (@account.Id) - @account.Balance.ToString("C2")</option>
+                                    <option value="@account.AccountId">@GetEnumDisplayName(account.Type) (@account.AccountId) - @account.Balance.ToString("C2")</option>
                                 }
                             </InputSelect>
                             <ValidationMessage For="@(() => transferModel.FromAccountId)" />
@@ -128,7 +128,7 @@
                                 <option value="0">-- Select Account --</option> 
                                 @foreach (var account in customer.Accounts)
                                 {
-                                    <option value="@account.Id">@GetEnumDisplayName(account.Type) (@account.Id) - @account.Balance.ToString("C2")</option>
+                                    <option value="@account.AccountId">@GetEnumDisplayName(account.Type) (@account.AccountId) - @account.Balance.ToString("C2")</option>
                                 }
                             </InputSelect>
                             <ValidationMessage For="@(() => transferModel.ToAccountId)" />
@@ -226,7 +226,7 @@ else
     {
         loanRequest.CreditRating = customer!.CreditRating;
         loanRequest.Name = customer.Name;
-        loanRequest.Id = customer.Id;
+        loanRequest.CustomerId = customer.CustomerId;
         var account = await Mediator.Send(new CreateCustomerLoanRequestCommand(loanRequest));
         if (account.Status == AccountStatus.Rejected)
         {
@@ -235,7 +235,7 @@ else
                     Style = "position: absolute; inset-inline-start: -1000px;",
                     Severity = NotificationSeverity.Error,
                     Summary = "Loan Rejected",
-                    Detail = "We value your business but your credit score is too low.",
+                    Detail = "We value your business but your application was rejected.",
                     Duration = 4000
                 });
         }
@@ -305,8 +305,8 @@ else
             return;
         }
 
-        var fromAccount = customer.Accounts.FirstOrDefault(a => a.Id == transferModel.FromAccountId);
-        var toAccount = customer.Accounts.FirstOrDefault(a => a.Id == transferModel.ToAccountId);
+        var fromAccount = customer.Accounts.FirstOrDefault(a => a.AccountId == transferModel.FromAccountId);
+        var toAccount = customer.Accounts.FirstOrDefault(a => a.AccountId == transferModel.ToAccountId);
 
         if (fromAccount == null || toAccount == null)
         {
@@ -316,7 +316,7 @@ else
 
         if (fromAccount.Balance < transferModel.Amount)
         {
-            transferMessage = $"Insufficient funds in account {fromAccount.Id}. Available: {fromAccount.Balance:C2}";
+            transferMessage = $"Insufficient funds in account {fromAccount.AccountId}. Available: {fromAccount.Balance:C2}";
             return;
         }
 
@@ -326,7 +326,7 @@ else
             toAccount.Balance += transferModel.Amount;
 
             transferSuccess = true;
-            transferMessage = $"Successfully transferred {transferModel.Amount:C2} from account {fromAccount.Id} to account {toAccount.Id}.";
+            transferMessage = $"Successfully transferred {transferModel.Amount:C2} from account {fromAccount.AccountId} to account {toAccount.AccountId}.";
 
             transferModel = new Transfer();
 

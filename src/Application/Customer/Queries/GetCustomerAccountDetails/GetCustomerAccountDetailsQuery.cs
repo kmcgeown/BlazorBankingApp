@@ -1,10 +1,9 @@
-﻿using Application.Customer.Queries.AuthenticateCustomer;
+﻿namespace Application.Customer.Queries.GetCustomerAccountDetails;
 
-namespace Application.Customer.Queries.GetCustomerAccountDetails;
+public record GetCustomerAccountDetailsQuery(string CustomerName) : IRequest<CustomerDetails>;
 
-public record GetCustomerAccountDetailsQuery(string CustomerName) :IRequest<CustomerDetails>;
-
-public class GetCustomerAccountDetailsQueryHandler : IRequestHandler<GetCustomerAccountDetailsQuery, CustomerDetails>
+public class GetCustomerAccountDetailsQueryHandler
+    : IRequestHandler<GetCustomerAccountDetailsQuery, CustomerDetails>
 {
     private readonly ICustomerRepository _customerRepository;
 
@@ -12,7 +11,11 @@ public class GetCustomerAccountDetailsQueryHandler : IRequestHandler<GetCustomer
     {
         _customerRepository = customerRepository;
     }
-    public async Task<CustomerDetails> Handle(GetCustomerAccountDetailsQuery query, CancellationToken cancellationToken)
+
+    public async Task<CustomerDetails> Handle(
+        GetCustomerAccountDetailsQuery query,
+        CancellationToken cancellationToken
+    )
     {
         return await _customerRepository.GetCustomerAccountDetails(query.CustomerName);
     }

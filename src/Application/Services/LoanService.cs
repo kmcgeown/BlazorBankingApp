@@ -1,7 +1,4 @@
-﻿using Application.InterestRules;
-using Domain.Services;
-
-namespace Application.Services;
+﻿namespace Application.Services;
 
 public class LoanService : ILoanService
 {

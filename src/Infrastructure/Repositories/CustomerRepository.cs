@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
                     : authCustomer.Name == "Jim" ? 45
                     : authCustomer.Name == "Jim" ? 80
                     : 0;
-                customerDetails.Id = random.Next(10000, 19999);
+                customerDetails.CustomerId = random.Next(10000, 19999);
             }
 
             return Task.FromResult(customerDetails);
@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
             if (!string.IsNullOrEmpty(customerName))
             {
                 string lowerCaseName = customerName.ToLowerInvariant();
-                int creditRating = customerName switch
+                int creditRating = lowerCaseName switch
                 {
                     "bob" => 15,
                     "jim" => 45,
@@ -47,7 +47,7 @@ namespace Infrastructure.Repositories
                 {
                     Name = customerName,
                     CreditRating = creditRating,
-                    Id = random.Next(10000, 19999),
+                    CustomerId = random.Next(10000, 19999),
                 };
             }
             var result = GenerateRandomAccounts(customerDetails);
@@ -55,7 +55,7 @@ namespace Infrastructure.Repositories
             return result;
         }
 
-        public Task<bool> UpdateCustomerAccount(CustomerDetails customerDetails)
+        public Task<bool> UpdateCustomerAccount(Account account, int customerId)
         {
             //Fake DB update
             return Task.FromResult(true);
@@ -87,7 +87,7 @@ namespace Infrastructure.Repositories
 
                 var newAccount = new Account
                 {
-                    Id = randomAccountId,
+                    AccountId = randomAccountId,
                     Type = randomType,
                     Balance = randomBalance,
                     OutstandingBalance = randomOutStandingBalance,

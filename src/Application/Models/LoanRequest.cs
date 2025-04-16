@@ -2,7 +2,7 @@
 
 public class LoanRequest
 {
-    public int Id { get; set; }
+    public int CustomerId { get; set; }
     public string? Name { get; set; }
 
     [Range(1.00, 10000.00, ErrorMessage = "Loan amount must be between 1.00 and 10,000.00")]

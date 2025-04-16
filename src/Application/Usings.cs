@@ -1,6 +1,10 @@
-﻿global using Microsoft.Extensions.DependencyInjection;
+﻿global using System.ComponentModel.DataAnnotations;
 global using System.Reflection;
-global using System.ComponentModel.DataAnnotations;
-global using MediatR;
-global using Application.Models;
+global using Application.Enums;
+global using Application.InterestRules;
 global using Application.Interfaces.Repositories;
+global using Application.Models;
+global using Application.Services;
+global using Domain.Services;
+global using MediatR;
+global using Microsoft.Extensions.DependencyInjection;
