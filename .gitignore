@@ -230,3 +230,10 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /.vs/KronApp/v17/.suo
+/src/Web/..logs
+/src/GrafanaLoki/loki_wal/checkpoint.000000
+/src/GrafanaLoki/loki_wal
+/src/GrafanaLoki/loki_data
+/src/GrafanaLoki/loki-tmp/wal
+/src/GrafanaLoki/loki-index/uploader
+/src/GrafanaLoki/loki-tmp
