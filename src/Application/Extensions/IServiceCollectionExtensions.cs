@@ -1,4 +1,6 @@
-﻿namespace Application.Extensions;
+﻿using Application.Common.Behaviors;
+
+namespace Application.Extensions;
 
 public static class IServiceCollectionExtensions
 {
@@ -12,6 +14,8 @@ public static class IServiceCollectionExtensions
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
         );
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
     }
 
     public static void AddProviders(this IServiceCollection services)

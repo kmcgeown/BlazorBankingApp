@@ -25,12 +25,9 @@ public class CustomerRepository : ICustomerRepository
                 _ => random.Next(0, 100),
             };
 
-            customerDetails = new CustomerDetails
-            {
-                Name = customerName,
-                CreditRating = creditRating,
-                CustomerId = random.Next(10000, 19999),
-            };
+            customerDetails.Name = customerName;
+            customerDetails.CreditRating = creditRating;
+            customerDetails.CustomerId = random.Next(10000, 19999);
         }
         var result = GenerateRandomAccounts(customerDetails);
 

@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
 @using Application.Models
 @using MediatR
 @inject IMediator Mediator
@@ -52,8 +53,7 @@
     private async Task Logout()
     {
         await AuthService.LogoutAsync();
-        // Force navigation to ensure clean state, especially after logout
-       // NavManager.NavigateTo("/", forceLoad: true);
+       Navigation.NavigateTo("/login");
     }
 
     // Implement IDisposable to unsubscribe from the event when the component is destroyed

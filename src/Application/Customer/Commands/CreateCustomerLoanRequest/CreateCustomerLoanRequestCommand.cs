@@ -1,6 +1,6 @@
 ﻿namespace Application.Customer.Commands.CreateCustomerLoanRequest;
 
-public record CreateCustomerLoanRequestCommand(LoanRequest loanRequest) : IRequest<Account>;
+public record CreateCustomerLoanRequestCommand(LoanRequest LoanRequest) : IRequest<Account>;
 
 public class CreateCustomerLoanRequestCommandHandler
     : IRequestHandler<CreateCustomerLoanRequestCommand, Account>
@@ -25,9 +25,9 @@ public class CreateCustomerLoanRequestCommandHandler
         Account account = new();
 
         var (IsApproved, Message, InterestRate) = _loanService.ApplyForLoan(
-            command.loanRequest.CreditRating,
-            command.loanRequest.Amount,
-            command.loanRequest.DurationYears
+            command.LoanRequest.CreditRating,
+            command.LoanRequest.Amount,
+            command.LoanRequest.DurationYears
         );
 
         //TODO: Should have its own helper method
@@ -37,14 +37,14 @@ public class CreateCustomerLoanRequestCommandHandler
             account.Status = Enums.AccountStatus.Open;
             account.Type = Enums.AccountType.Loan;
 
-            account.Balance = command.loanRequest.Amount;
+            account.Balance = command.LoanRequest.Amount;
             var interestRate = InterestRate ?? 0;
-            account.OutstandingBalance = command.loanRequest.Amount * (1 + interestRate);
+            account.OutstandingBalance = command.LoanRequest.Amount * (1 + interestRate);
 
             //Fake update of db
             _ = await _customerRepository.CreateNewCustomerAccount(
                 account,
-                command.loanRequest.CustomerId
+                command.LoanRequest.CustomerId
             );
         }
         else

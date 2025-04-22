@@ -37,8 +37,7 @@
         bool success = await AuthService.LoginAsync(loginModel.Username ?? "", loginModel.Password ?? "");
         if (success)
         {
-            // Redirect to the home page or a desired page after login
-            NavManager.NavigateTo("/");
+            NavManager.NavigateTo("/accountDetails");
         }
         else
         {

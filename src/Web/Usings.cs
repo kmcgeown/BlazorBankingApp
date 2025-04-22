@@ -1,5 +1,12 @@
-﻿global using Web.Components;
-global using Infrastructure.Extensions;
+﻿global using Application.Common.Behaviors;
+global using Application.Common.Helper;
 global using Application.Extensions;
+global using Infrastructure.Extensions;
+global using MediatR;
 global using Radzen;
+global using Serilog;
+global using Serilog.Events;
+global using Serilog.Formatting.Compact;
+global using Serilog.Sinks.Grafana.Loki;
+global using Web.Components;
 global using Web.Services;

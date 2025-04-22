@@ -1,10 +1,15 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.Reflection;
+global using System.Text.Json;
+global using Application.Common.Behaviors;
 global using Application.Enums;
+global using Application.Extensions;
 global using Application.InterestRules;
 global using Application.Interfaces.Repositories;
 global using Application.Models;
 global using Application.Services;
 global using Domain.Services;
+global using FluentValidation;
 global using MediatR;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
